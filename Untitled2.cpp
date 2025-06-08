@@ -434,9 +434,49 @@ void loadBooksFromFile() {
     cout << "Books loaded.\n";
 }
 
+void saveAuthorsToFile() {
+    ofstream out("authors.txt");
+    for (int i = 0; i < authors.size(); i++) {
+        out << authors[i].getId() << "\n";
+        out << authors[i].getName() << "\n";
+        out << authors[i].getPhone() << "\n";
+        out << authors[i].getAge() << "\n";
+        out << authors[i].getDegree() << "\n";
+        out << authors[i].getPosition() << "\n";
+        out << authors[i].getWorkplace() << "\n";
+    }
+    out.close();
+    cout << "Authors saved.\n";
+}
+
+void loadAuthorsFromFile() {
+    authors.clear();
+    ifstream in("authors.txt");
+    string id, name, phone, degree, position, workplace;
+    int age;
+
+    while (getline(in, id)) {
+        getline(in, name);
+        getline(in, phone);
+        in >> age;
+        in.ignore();
+        getline(in, degree);
+        getline(in, position);
+        getline(in, workplace);
+
+        Author a(id, name, phone, age, degree, position, workplace);
+        authors.push_back(a);
+    }
+    in.close();
+    cout << "Authors loaded.\n";
+}
+
+
+
 int main() {
     int choice;
     loadBooksFromFile();
+    loadAuthorsFromFile();
     do {
         cout << "\n--- Store Management ---\n";
         cout << "1. Book Management\n";
@@ -459,6 +499,7 @@ int main() {
         }
     } while (choice != 0);
     saveBooksToFile();
+    saveAuthorsToFile();
     cout << "Goodbye!\n";
     return 0;
 }
