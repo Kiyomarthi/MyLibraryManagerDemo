@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -7,24 +8,83 @@ class Person {
 protected:
     string id;
     string name;
+    string phone;
+    int age;
 public:
-    Person();
-    Person(string id, string name);
-    string getId();
-    string getName();
-    virtual ~Person();
+    Person() {
+        id = "";
+        name = "";
+        phone = "";
+        age = 0;
+    }
+    Person(string id, string name, string phone, int age) {
+        this->id = id;
+        this->name = name;
+        this->phone = phone;
+        this->age = age;
+    }
+    string getId() {
+        return id;
+    }
+    string getName() {
+        return name;
+    }
+    string getPhone() {
+        return phone;
+    }
+    int getAge() {
+        return age;
+    }
 };
 
 class Author : public Person {
+private:
+    string degree;
+    string position;
+    string workplace;
 public:
-    Author();
-    Author(string id, string name);
+    Author() : Person() {
+        degree = "";
+        position = "";
+        workplace = "";
+    }
+    Author(string id, string name, string phone, int age, string degree, string position, string workplace)
+        : Person(id, name, phone, age) {
+        this->degree = degree;
+        this->position = position;
+        this->workplace = workplace;
+    }
+    string getDegree() {
+        return degree;
+    }
+    string getPosition() {
+        return position;
+    }
+    string getWorkplace() {
+        return workplace;
+    }
 };
 
 class Customer : public Person {
+private:
+    string email;
+    string address;
 public:
-    Customer();
-    Customer(string id, string name);
+    Customer() : Person() {
+        email = "";
+        address = "";
+    }
+    Customer(string id, string name, string phone, int age, string email, string address)
+        : Person(id, name, phone, age) {
+        this->email = email;
+        this->address = address;
+    }
+    string getEmail() {
+        return email;
+    }
+    string getAddress() {
+        return address;
+    }
 };
 
 class Book {
@@ -34,14 +94,100 @@ private:
     string authorId;
     double price;
 public:
-    Book();
-    Book(int code, string title, string authorId, double price);
-    int getCode();
-    string getTitle();
-    string getAuthorId();
-    double getPrice();
+    Book() {
+        code = 0;
+        title = "";
+        authorId = "";
+        price = 0;
+    }
+    Book(int code, string title, string authorId, double price) {
+        this->code = code;
+        this->title = title;
+        this->authorId = authorId;
+        this->price = price;
+    }
+    int getCode() {
+        return code;
+    }
+    string getTitle() {
+        return title;
+    }
+    string getAuthorId() {
+        return authorId;
+    }
+    double getPrice() {
+        return price;
+    }
 };
 
+vector<Book> books;
+
+void addBook() {
+    int code;
+    string title;
+    string authorId;
+    double price;
+
+    cout << "\nEnter book code: ";
+    cin >> code;
+    cin.ignore();
+    cout << "Enter book title: ";
+    getline(cin, title);
+    cout << "Enter author ID: ";
+    getline(cin, authorId);
+    cout << "Enter book price: ";
+    cin >> price;
+
+    Book newBook(code, title, authorId, price);
+    books.push_back(newBook);
+
+    cout << "Book added successfully.\n";
+}
+
+void listBooks() {
+    cout << "\n--- Book List ---\n";
+    for (int i = 0; i < books.size(); i++) {
+        cout << "Code: " << books[i].getCode() << endl;
+        cout << "Title: " << books[i].getTitle() << endl;
+        cout << "Author ID: " << books[i].getAuthorId() << endl;
+        cout << "Price: " << books[i].getPrice() << endl;
+        cout << "-------------------------\n";
+    }
+}
+
+void bookMenu() {
+    int choice;
+    do {
+        cout << "\n--- Book Management ---\n";
+        cout << "1. Add Book\n";
+        cout << "2. Show Book List\n";
+        cout << "0. Back\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice) {
+            case 1:
+                addBook();
+                break;
+            case 2:
+                listBooks();
+                break;
+        }
+    } while (choice != 0);
+}
+
 int main() {
+    int choice;
+    do {
+        cout << "\n--- Store Management ---\n";
+        cout << "1. Book Management\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice) {
+            case 1:
+                bookMenu();
+                break;
+        }
+    } while (choice != 0);
     return 0;
 }
