@@ -121,6 +121,7 @@ public:
 };
 
 vector<Book> books;
+vector<Author> authors;
 
 void addBook() {
     int code;
@@ -155,6 +156,67 @@ void listBooks() {
     }
 }
 
+void addAuthor() {
+    string id, name, phone, degree, position, workplace;
+    int age;
+
+    cin.ignore();
+    cout << "\nEnter author ID: ";
+    getline(cin, id);
+    cout << "Enter name: ";
+    getline(cin, name);
+    cout << "Enter phone: ";
+    getline(cin, phone);
+    cout << "Enter age: ";
+    cin >> age;
+    cin.ignore();
+    cout << "Enter degree: ";
+    getline(cin, degree);
+    cout << "Enter position: ";
+    getline(cin, position);
+    cout << "Enter workplace: ";
+    getline(cin, workplace);
+
+    Author newAuthor(id, name, phone, age, degree, position, workplace);
+    authors.push_back(newAuthor);
+
+    cout << "Author added successfully.\n";
+}
+
+void listAuthors() {
+    cout << "\n--- Author List ---\n";
+    for (int i = 0; i < authors.size(); i++) {
+        cout << "ID: " << authors[i].getId() << endl;
+        cout << "Name: " << authors[i].getName() << endl;
+        cout << "Phone: " << authors[i].getPhone() << endl;
+        cout << "Age: " << authors[i].getAge() << endl;
+        cout << "Degree: " << authors[i].getDegree() << endl;
+        cout << "Position: " << authors[i].getPosition() << endl;
+        cout << "Workplace: " << authors[i].getWorkplace() << endl;
+        cout << "-------------------------\n";
+    }
+}
+
+void authorMenu() {
+    int choice;
+    do {
+        cout << "\n--- Author Management ---\n";
+        cout << "1. Add Author\n";
+        cout << "2. Show Author List\n";
+        cout << "0. Back\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice) {
+            case 1:
+                addAuthor();
+                break;
+            case 2:
+                listAuthors();
+                break;
+        }
+    } while (choice != 0);
+}
+
 void bookMenu() {
     int choice;
     do {
@@ -180,12 +242,16 @@ int main() {
     do {
         cout << "\n--- Store Management ---\n";
         cout << "1. Book Management\n";
+        cout << "2. Author Management\n";
         cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
         switch (choice) {
             case 1:
                 bookMenu();
+                break;
+            case 2:
+                authorMenu();
                 break;
         }
     } while (choice != 0);
