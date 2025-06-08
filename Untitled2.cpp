@@ -120,9 +120,43 @@ public:
     }
 };
 
+class Sale {
+private:
+    int bookCode;
+    string date;
+    int quantity;
+    double totalPrice;
+public:
+    Sale() {
+        bookCode = 0;
+        date = "";
+        quantity = 0;
+        totalPrice = 0;
+    }
+    Sale(int bookCode, string date, int quantity, double totalPrice) {
+        this->bookCode = bookCode;
+        this->date = date;
+        this->quantity = quantity;
+        this->totalPrice = totalPrice;
+    }
+    int getBookCode() {
+        return bookCode;
+    }
+    string getDate() {
+        return date;
+    }
+    int getQuantity() {
+        return quantity;
+    }
+    double getTotalPrice() {
+        return totalPrice;
+    }
+};
+
 vector<Book> books;
 vector<Author> authors;
 vector<Customer> customers;
+vector<Sale> sales;
 
 void addBook() {
     int code;
@@ -236,6 +270,74 @@ void listCustomers() {
     }
 }
 
+void addSale() {
+    int bookCode;
+    string date;
+    int quantity;
+
+    cout << "\nEnter book code: ";
+    cin >> bookCode;
+    cin.ignore();
+    cout << "Enter sale date (YYYY-MM-DD): ";
+    getline(cin, date);
+    cout << "Enter quantity sold: ";
+    cin >> quantity;
+
+    double price = 0;
+    for (int i = 0; i < books.size(); i++) {
+        if (books[i].getCode() == bookCode) {
+            price = books[i].getPrice();
+            break;
+        }
+    }
+    if (price == 0) {
+        cout << "Book code not found.\n";
+        return;
+    }
+
+    double totalPrice = price * quantity;
+    Sale newSale(bookCode, date, quantity, totalPrice);
+    sales.push_back(newSale);
+
+    cout << "Sale recorded successfully.\n";
+}
+
+void reportSales() {
+    cout << "\n--- Sales Report ---\n";
+
+    if (sales.empty()) {
+        cout << "No sales recorded yet.\n";
+        return;
+    }
+
+    for (int i = 0; i < sales.size(); i++) {
+        int bookCode = sales[i].getBookCode();
+        string bookTitle = "Unknown";
+
+        // ???? ???? ????? ???? ?? ???? ?? ????
+        for (int j = 0; j < books.size(); j++) {
+            if (books[j].getCode() == bookCode) {
+                bookTitle = books[j].getTitle();
+                break;
+            }
+        }
+
+        cout << "Book Code: " << bookCode 
+             << ", Title: " << bookTitle 
+             << ", Date: " << sales[i].getDate() 
+             << ", Quantity: " << sales[i].getQuantity() 
+             << ", Total Price: " << sales[i].getTotalPrice() <<" Rial"<< endl;
+    }
+    
+    int totalOfSales = 0;
+    for(int i = 0; i < sales.size(); i++){
+    	totalOfSales += sales[i].getTotalPrice();
+	}
+	
+	cout<<"------ total of all sale: "<< totalOfSales<<endl;
+}
+
+
 void authorMenu() {
     int choice;
     do {
@@ -276,21 +378,21 @@ void bookMenu() {
     } while (choice != 0);
 }
 
-void customerMenu() {
+void salesMenu() {
     int choice;
     do {
-        cout << "\n--- Customer Management ---\n";
-        cout << "1. Add Customer\n";
-        cout << "2. Show Customer List\n";
+        cout << "\n--- Sales Management ---\n";
+        cout << "1. Add Sale\n";
+        cout << "2. Show Sales Report\n";
         cout << "0. Back\n";
         cout << "Enter your choice: ";
         cin >> choice;
         switch (choice) {
             case 1:
-                addCustomer();
+                addSale();
                 break;
             case 2:
-                listCustomers();
+                reportSales();
                 break;
         }
     } while (choice != 0);
@@ -302,7 +404,7 @@ int main() {
         cout << "\n--- Store Management ---\n";
         cout << "1. Book Management\n";
         cout << "2. Author Management\n";
-        cout << "3. Customer Management\n";
+        cout << "3. Sales Management\n";
         cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -314,9 +416,10 @@ int main() {
                 authorMenu();
                 break;
             case 3:
-                customerMenu();
+                salesMenu();
                 break;
         }
     } while (choice != 0);
+    cout << "Goodbye!\n";
     return 0;
 }
