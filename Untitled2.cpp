@@ -174,11 +174,10 @@ void addBook() {
 
     cout << "\nEnter book code: ";
     cin >> code;
-    cin.ignore();
     cout << "Enter book title: ";
-    getline(cin, title);
+    cin >> title;
     cout << "Enter author ID: ";
-    getline(cin, authorId);
+    cin >> authorId;
     cout << "Enter book price: ";
     cin >> price;
 
@@ -204,22 +203,22 @@ void addAuthor() {
     string id, name, phone, degree, position, workplace;
     int age;
 
-    cin.ignore();
+    
     cout << "\nEnter author ID: ";
-    getline(cin, id);
+    cin >> id;
     cout << "Enter name: ";
-    getline(cin, name);
+    cin >> name;
     cout << "Enter phone: ";
-    getline(cin, phone);
+    cin >> phone;
     cout << "Enter age: ";
     cin >> age;
-    cin.ignore();
     cout << "Enter degree: ";
-    getline(cin, degree);
+    cin >> degree;
     cout << "Enter position: ";
-    getline(cin, position);
+    cin>>position;
     cout << "Enter workplace: ";
     getline(cin, workplace);
+    cin >> workplace;
 
     Author newAuthor(id, name, phone, age, degree, position, workplace);
     authors.push_back(newAuthor);
@@ -246,20 +245,20 @@ void addCustomer() {
     string id, name, phone, email, address;
     int age;
 
-    cin.ignore();
     cout << "\nEnter customer ID: ";
-    getline(cin, id);
+    cin >> id;
     cout << "Enter name: ";
-    getline(cin, name);
+    cin >> name;
     cout << "Enter phone: ";
-    getline(cin, phone);
+    cin >> phone;
     cout << "Enter age: ";
     cin >> age;
-    cin.ignore();
     cout << "Enter email: ";
     getline(cin, email);
+    cin >> email;
     cout << "Enter address: ";
-    getline(cin, address);
+    
+    cin >> address;
 
     Customer newCustomer(id, name, phone, age, email, address);
     customers.push_back(newCustomer);
@@ -288,9 +287,9 @@ void addSale() {
 
     cout << "\nEnter book code: ";
     cin >> bookCode;
-    cin.ignore();
+    
     cout << "Enter sale date (YYYY-MM-DD): ";
-    getline(cin, date);
+    cin >> ;
     cout << "Enter quantity sold: ";
     cin >> quantity;
 
@@ -326,7 +325,7 @@ void reportSales() {
         int bookCode = sales[i].getBookCode();
         string bookTitle = "Unknown";
 
-        // ???? ???? ????? ???? ?? ???? ?? ????
+        
         for (int j = 0; j < books.size(); j++) {
             if (books[j].getCode() == bookCode) {
                 bookTitle = books[j].getTitle();
@@ -561,7 +560,7 @@ int main() {
     loadCustomersFromFile();
     loadSalesFromFile();
     do {
-        cout << "\n--------- Store Management --------- Abolfazl Kiumarsi --------- \n";
+        cout << "\n			--------- Store Management --------- Abolfazl Kiumarsi --------- \n";
         cout << "1. Book Management\n";
         cout << "2. Author Management\n";
         cout << "3. Sales Management\n";
