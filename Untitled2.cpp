@@ -5,6 +5,13 @@
 
 using namespace std;
 
+
+void saveBooksToFile();
+void saveAuthorsToFile();
+void saveCustomersToFile();
+void saveSalesToFile();
+
+
 class Person {
 protected:
     string id;
@@ -177,6 +184,7 @@ void addBook() {
 
     Book newBook(code, title, authorId, price);
     books.push_back(newBook);
+    saveBooksToFile();
 
     cout << "Book added successfully.\n";
 }
@@ -215,6 +223,7 @@ void addAuthor() {
 
     Author newAuthor(id, name, phone, age, degree, position, workplace);
     authors.push_back(newAuthor);
+    saveAuthorsToFile();
 
     cout << "Author added successfully.\n";
 }
@@ -254,6 +263,7 @@ void addCustomer() {
 
     Customer newCustomer(id, name, phone, age, email, address);
     customers.push_back(newCustomer);
+    saveCustomersToFile();
 
     cout << "Customer added successfully.\n";
 }
@@ -299,6 +309,7 @@ void addSale() {
     double totalPrice = price * quantity;
     Sale newSale(bookCode, date, quantity, totalPrice);
     sales.push_back(newSale);
+     saveSalesToFile();
 
     cout << "Sale recorded successfully.\n";
 }
@@ -471,12 +482,84 @@ void loadAuthorsFromFile() {
     cout << "Authors loaded.\n";
 }
 
+void saveCustomersToFile() {
+    ofstream out("customers.txt");
+    for (int i = 0; i < customers.size(); i++) {
+        out << customers[i].getId() << "\n";
+        out << customers[i].getName() << "\n";
+        out << customers[i].getPhone() << "\n";
+        out << customers[i].getAge() << "\n";
+        out << customers[i].getEmail() << "\n";
+        out << customers[i].getAddress() << "\n";
+    }
+    out.close();
+    cout << "Customers saved.\n";
+}
+
+void loadCustomersFromFile() {
+    customers.clear();
+    ifstream in("customers.txt");
+    string id, name, phone, email, address;
+    int age;
+
+    while (getline(in, id)) {
+        getline(in, name);
+        getline(in, phone);
+        in >> age;
+        in.ignore();
+        getline(in, email);
+        getline(in, address);
+
+        Customer c(id, name, phone, age, email, address);
+        customers.push_back(c);
+    }
+    in.close();
+    cout << "Customers loaded.\n";
+}
+
+void saveSalesToFile() {
+    ofstream out("sales.txt");
+    for (int i = 0; i < sales.size(); i++) {
+        out << sales[i].getBookCode() << "\n";
+        out << sales[i].getDate() << "\n";
+        out << sales[i].getQuantity() << "\n";
+        out << sales[i].getTotalPrice() << "\n";
+    }
+    out.close();
+    cout << "Sales saved.\n";
+}
+
+
+void loadSalesFromFile() {
+    sales.clear();
+    ifstream in("sales.txt");
+    int bookCode, quantity;
+    string date;
+    double totalPrice;
+
+    while (in >> bookCode) {
+        in.ignore();
+        getline(in, date);
+        in >> quantity;
+        in >> totalPrice;
+        in.ignore();
+
+        Sale s(bookCode, date, quantity, totalPrice);
+        sales.push_back(s);
+    }
+    in.close();
+    cout << "Sales loaded.\n";
+}
+
+
 
 
 int main() {
     int choice;
     loadBooksFromFile();
     loadAuthorsFromFile();
+    loadCustomersFromFile();
+    loadSalesFromFile();
     do {
         cout << "\n--- Store Management ---\n";
         cout << "1. Book Management\n";
@@ -500,6 +583,8 @@ int main() {
     } while (choice != 0);
     saveBooksToFile();
     saveAuthorsToFile();
+    saveCustomersToFile();
+    saveSalesToFile();
     cout << "Goodbye!\n";
     return 0;
 }
