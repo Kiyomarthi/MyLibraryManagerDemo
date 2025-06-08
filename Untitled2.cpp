@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -398,8 +399,44 @@ void salesMenu() {
     } while (choice != 0);
 }
 
+void saveBooksToFile() {
+    ofstream out("books.txt");
+    for (int i = 0; i < books.size(); i++) {
+        out << books[i].getCode() << "\n";
+        out << books[i].getTitle() << "\n";
+        out << books[i].getAuthorId() << "\n";
+        out << books[i].getPrice() << "\n";
+    }
+    out.close();
+    cout << "Books saved.\n";
+}
+
+void loadBooksFromFile() {
+    books.clear();
+    ifstream in("books.txt");
+    int code;
+    string title;
+    string authorId;
+    double price;
+
+    while (in >> code) {
+        in.ignore();
+        getline(in, title);
+        getline(in, authorId);
+        in >> price;
+        in.ignore();
+
+        Book b(code, title, authorId, price);
+        books.push_back(b);
+    }
+
+    in.close();
+    cout << "Books loaded.\n";
+}
+
 int main() {
     int choice;
+    loadBooksFromFile();
     do {
         cout << "\n--- Store Management ---\n";
         cout << "1. Book Management\n";
@@ -418,8 +455,10 @@ int main() {
             case 3:
                 salesMenu();
                 break;
+            
         }
     } while (choice != 0);
+    saveBooksToFile();
     cout << "Goodbye!\n";
     return 0;
 }
