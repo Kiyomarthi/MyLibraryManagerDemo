@@ -289,7 +289,7 @@ void addSale() {
     cin >> bookCode;
     
     cout << "Enter sale date (YYYY-MM-DD): ";
-    cin >> ;
+    cin >> date;
     cout << "Enter quantity sold: ";
     cin >> quantity;
 
